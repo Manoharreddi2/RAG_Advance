@@ -81,14 +81,42 @@ def answer_claims(answer: str) -> list[str]:
     return [s.strip() for s in _SENT.split(text) if len(s.strip().split()) >= 3]
 
 
+def premise_windows(passage: str, size: int = 3) -> list[str]:
+    """Split a formatted passage ("header:\nbody") into windows of 1..size consecutive sentences / table rows,
+    each keeping the header (and the table header row). NLI models are trained on short premises and drift to
+    'neutral' on whole paragraphs, so entailment is taken as the max over windows (as in SummaC)."""
+    head, sep, body = passage.partition(":\n")
+    if not sep:
+        head, body = "", passage
+    lines = body.split("\n")
+    table_head = "\n".join(l for l in lines[:2] if l.strip().startswith("|"))
+    units: list[str] = []
+    for line in lines:
+        if line.strip().startswith("|"):
+            if line.strip() not in table_head:
+                units.append(line.strip())
+        else:
+            units += [x.strip() for x in _SENT.split(line) if x.strip()]
+    out = []
+    for i in range(len(units)):
+        for k in range(1, size + 1):
+            if i + k <= len(units):
+                w = "\n".join(units[i:i + k]) if units[i].startswith("|") else " ".join(units[i:i + k])
+                if units[i].startswith("|") and table_head:
+                    w = table_head + "\n" + w
+                out.append(f"{head}:\n{w}" if head else w)
+    return out or [passage]
+
+
 def faithfulness(answer: str, passages: list[str], nli, threshold: float = 0.5) -> dict:
-    """Share of answer sentences entailed by at least one retrieved passage (NLI cross-encoder)."""
+    """Share of answer sentences entailed (max over sentence windows of the retrieved passages) — NLI cross-encoder."""
     claims = answer_claims(answer)
     if not claims or not passages:
         return {"faithfulness": None, "n_claims": len(claims)}
-    pairs = [(p, c) for c in claims for p in passages]
+    windows = [w for p in passages for w in premise_windows(p)]
+    pairs = [(w, c) for c in claims for w in windows]
     probs = nli.entailment(pairs)
-    per_claim = [max(probs[i * len(passages):(i + 1) * len(passages)]) for i in range(len(claims))]
+    per_claim = [max(probs[i * len(windows):(i + 1) * len(windows)]) for i in range(len(claims))]
     supported = [p >= threshold for p in per_claim]
     return {"faithfulness": sum(supported) / len(claims), "n_claims": len(claims),
             "unsupported_claims": [c for c, ok in zip(claims, supported) if not ok]}

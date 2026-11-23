@@ -44,7 +44,7 @@ class Settings(BaseSettings):
     embedding_query_prefix: str = "Represent this sentence for searching relevant passages: "
     embedding_batch_size: int = 32
     reranker_model: str = "cross-encoder/ms-marco-MiniLM-L-6-v2"
-    nli_model: str = "cross-encoder/nli-deberta-v3-xsmall"
+    nli_model: str = "cross-encoder/nli-deberta-v3-base"
     device: str = "cpu"
 
     # --- LLM ---

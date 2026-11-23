@@ -139,8 +139,10 @@ def write_report(result: dict, out_dir: Path) -> Path:
           "share of the top-K chunks that are relevant. **MRR**: 1/rank of the first relevant chunk.",
           "* **Answer correctness**: all key facts of the reference answer appear in the generated answer "
           "(numbers normalized); unanswerable questions count as correct only when the system refuses.",
-          "* **Faithfulness**: share of answer sentences entailed (p ≥ 0.5) by at least one retrieved passage, "
-          "scored by the NLI cross-encoder.",
+          "* **Faithfulness**: share of answer sentences entailed (p ≥ 0.5) by the retrieved passages, judged by the "
+          "NLI cross-encoder over 1–3-sentence windows of each passage (with its title/date/page header). It is a "
+          "conservative lower bound: NLI models under-score facts read from table rows and sentences that combine "
+          "two facts, so some correctly grounded sentences count as unsupported (see per-question results).",
           "* **Citation precision**: share of cited passages `[n]` that contain gold evidence. **Citation page "
           "accuracy**: share of cited passages whose document and page range contain a gold page.",
           "* **Latency**: measured wall-clock retrieval + generation for each query on this machine. When two "

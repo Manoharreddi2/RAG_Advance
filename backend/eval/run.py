@@ -33,7 +33,7 @@ os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
 from app.config import get_settings  # noqa: E402
 from app.generation.answer import postprocess  # noqa: E402
 from app.generation.llm import cost_usd  # noqa: E402
-from app.generation.prompts import NO_ANSWER, build_messages  # noqa: E402
+from app.generation.prompts import NO_ANSWER, build_messages, format_passage  # noqa: E402
 from app.generation.rewrite import standalone_question  # noqa: E402
 from app.ingestion.pipeline import build_chunks, index_chunks  # noqa: E402
 from app.retrieval.bm25 import BM25Index  # noqa: E402
@@ -235,7 +235,8 @@ async def run(args) -> Path:
                                              + row["completion_tokens"] * s.projected_price_output_per_m) / 1e6
                 row.update(answer_correctness(rec["text"], q["key_facts"], bool(q["evidence"]), post["abstained"]))
                 if q["evidence"] and not post["abstained"]:
-                    row.update(faithfulness(rec["text"], [c["text"] for c in ctx], nli))
+                    # judge against the passages exactly as the LLM saw them (header: title, date, page, section)
+                    row.update(faithfulness(rec["text"], [format_passage(i, c) for i, c in enumerate(ctx, 1)], nli))
                     row.update(citation_metrics(rec["text"], ctx, q["evidence"], gold_pages.get(q["id"], [])))
             per_question.append(row)
             if i % 10 == 0 or i == len(questions):

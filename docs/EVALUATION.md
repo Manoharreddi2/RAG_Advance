@@ -45,7 +45,7 @@ Each configuration retrieves 10 chunks (for Recall@10). The top 5 go to the LLM.
 | MRR | 1 / rank of the first relevant chunk (0 if none in the top 10). |
 | Top-1 correct document | The first chunk comes from a gold document (shows version mix-ups). |
 | Answer correctness | All key facts present in the answer (numbers normalised, whole-number match). Unanswerable questions are correct only if the system refuses. |
-| Faithfulness | Share of answer sentences entailed (p ≥ 0.5) by at least one of the 5 context passages, judged by the `cross-encoder/nli-deberta-v3-xsmall` NLI model. Computed for non-refused answers. |
+| Faithfulness | Share of answer sentences entailed (p ≥ 0.5) by at least one of the 5 context passages — each passage formatted exactly as the LLM saw it, with its title/date/page/section header — judged by the `cross-encoder/nli-deberta-v3-base` NLI model. Computed for non-refused answers. |
 | Citation precision | Share of cited passages `[n]` that contain gold evidence. |
 | Citation page accuracy | Share of cited passages whose document + page range include a gold page. |
 | Correct refusals / false refusals | Refusal rate on unanswerable / answerable questions. |
