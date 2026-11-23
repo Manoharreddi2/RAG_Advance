@@ -1,0 +1,876 @@
+{
+  "documents": {
+    "customer_support_sla.md": {
+      "filename": "customer_support_sla.md",
+      "title": "Customer Support Service Level Agreement",
+      "category": "Operations",
+      "author": "Aisha Bello",
+      "doc_date": "2024-06-18",
+      "format": "md"
+    },
+    "data_retention_policy.docx": {
+      "filename": "data_retention_policy.docx",
+      "title": "Data Retention and Deletion Policy",
+      "category": "Legal",
+      "author": "James Whitfield",
+      "doc_date": "2023-11-30",
+      "format": "docx"
+    },
+    "employee_handbook.pdf": {
+      "filename": "employee_handbook.pdf",
+      "title": "Employee Handbook",
+      "category": "HR",
+      "author": "Elena Rodriguez",
+      "doc_date": "2024-01-08",
+      "format": "pdf"
+    },
+    "engineering_onboarding_guide.txt": {
+      "filename": "engineering_onboarding_guide.txt",
+      "title": "Engineering Onboarding Guide",
+      "category": "Engineering",
+      "author": "Sarah Lindqvist",
+      "doc_date": "2024-08-05",
+      "format": "txt"
+    },
+    "helixdb_v5_product_spec.md": {
+      "filename": "helixdb_v5_product_spec.md",
+      "title": "HelixDB 5.0 Product Specification",
+      "category": "Engineering",
+      "author": "Sarah Lindqvist",
+      "doc_date": "2024-07-12",
+      "format": "md"
+    },
+    "incident_response_runbook.txt": {
+      "filename": "incident_response_runbook.txt",
+      "title": "Incident Response Runbook",
+      "category": "Engineering",
+      "author": "Marcus Chen",
+      "doc_date": "2024-02-28",
+      "format": "txt"
+    },
+    "information_security_policy_2022.docx": {
+      "filename": "information_security_policy_2022.docx",
+      "title": "Information Security Policy v3",
+      "category": "Security",
+      "author": "Marcus Chen",
+      "doc_date": "2022-06-10",
+      "format": "docx"
+    },
+    "information_security_policy_2024.docx": {
+      "filename": "information_security_policy_2024.docx",
+      "title": "Information Security Policy v4",
+      "category": "Security",
+      "author": "Marcus Chen",
+      "doc_date": "2024-05-20",
+      "format": "docx"
+    },
+    "q3_2024_financial_report.pdf": {
+      "filename": "q3_2024_financial_report.pdf",
+      "title": "Q3 2024 Financial Report",
+      "category": "Finance",
+      "author": "David Okafor",
+      "doc_date": "2024-10-25",
+      "format": "pdf"
+    },
+    "remote_work_guidelines.md": {
+      "filename": "remote_work_guidelines.md",
+      "title": "Remote Work Guidelines",
+      "category": "HR",
+      "author": "Elena Rodriguez",
+      "doc_date": "2023-09-01",
+      "format": "md"
+    },
+    "travel_expense_policy_2023.pdf": {
+      "filename": "travel_expense_policy_2023.pdf",
+      "title": "Travel and Expense Policy 2023",
+      "category": "Finance",
+      "author": "Priya Raman",
+      "doc_date": "2023-02-01",
+      "format": "pdf"
+    },
+    "travel_expense_policy_2024.pdf": {
+      "filename": "travel_expense_policy_2024.pdf",
+      "title": "Travel and Expense Policy 2024",
+      "category": "Finance",
+      "author": "Priya Raman",
+      "doc_date": "2024-03-15",
+      "format": "pdf"
+    },
+    "vendor_procurement_procedure.docx": {
+      "filename": "vendor_procurement_procedure.docx",
+      "title": "Vendor Procurement Procedure",
+      "category": "Procurement",
+      "author": "David Okafor",
+      "doc_date": "2024-04-02",
+      "format": "docx"
+    }
+  },
+  "gold_pages": {
+    "q001": [
+      {
+        "doc": "travel_expense_policy_2024.pdf",
+        "page": 2
+      }
+    ],
+    "q002": [
+      {
+        "doc": "travel_expense_policy_2023.pdf",
+        "page": 2
+      }
+    ],
+    "q003": [
+      {
+        "doc": "travel_expense_policy_2024.pdf",
+        "page": 2
+      }
+    ],
+    "q004": [
+      {
+        "doc": "travel_expense_policy_2023.pdf",
+        "page": 2
+      }
+    ],
+    "q005": [
+      {
+        "doc": "travel_expense_policy_2024.pdf",
+        "page": 2
+      }
+    ],
+    "q006": [
+      {
+        "doc": "travel_expense_policy_2024.pdf",
+        "page": 3
+      }
+    ],
+    "q007": [
+      {
+        "doc": "travel_expense_policy_2023.pdf",
+        "page": 3
+      }
+    ],
+    "q008": [
+      {
+        "doc": "travel_expense_policy_2024.pdf",
+        "page": 2
+      }
+    ],
+    "q009": [
+      {
+        "doc": "travel_expense_policy_2023.pdf",
+        "page": 2
+      }
+    ],
+    "q010": [
+      {
+        "doc": "travel_expense_policy_2024.pdf",
+        "page": 1
+      }
+    ],
+    "q011": [
+      {
+        "doc": "travel_expense_policy_2024.pdf",
+        "page": 1
+      }
+    ],
+    "q012": [
+      {
+        "doc": "travel_expense_policy_2023.pdf",
+        "page": 1
+      }
+    ],
+    "q013": [
+      {
+        "doc": "travel_expense_policy_2024.pdf",
+        "page": 1
+      }
+    ],
+    "q014": [
+      {
+        "doc": "travel_expense_policy_2024.pdf",
+        "page": 1
+      }
+    ],
+    "q015": [
+      {
+        "doc": "travel_expense_policy_2024.pdf",
+        "page": 1
+      }
+    ],
+    "q016": [
+      {
+        "doc": "travel_expense_policy_2023.pdf",
+        "page": 3
+      }
+    ],
+    "q017": [
+      {
+        "doc": "travel_expense_policy_2024.pdf",
+        "page": 3
+      }
+    ],
+    "q018": [
+      {
+        "doc": "travel_expense_policy_2024.pdf",
+        "page": 3
+      }
+    ],
+    "q019": [
+      {
+        "doc": "travel_expense_policy_2024.pdf",
+        "page": 2
+      }
+    ],
+    "q020": [
+      {
+        "doc": "travel_expense_policy_2024.pdf",
+        "page": 3
+      }
+    ],
+    "q021": [
+      {
+        "doc": "travel_expense_policy_2024.pdf",
+        "page": 2
+      }
+    ],
+    "q022": [
+      {
+        "doc": "travel_expense_policy_2024.pdf",
+        "page": 1
+      }
+    ],
+    "q023": [
+      {
+        "doc": "information_security_policy_2024.docx",
+        "page": 1
+      }
+    ],
+    "q024": [
+      {
+        "doc": "information_security_policy_2022.docx",
+        "page": 1
+      }
+    ],
+    "q025": [
+      {
+        "doc": "information_security_policy_2022.docx",
+        "page": 1
+      }
+    ],
+    "q026": [
+      {
+        "doc": "information_security_policy_2024.docx",
+        "page": 1
+      }
+    ],
+    "q027": [
+      {
+        "doc": "information_security_policy_2024.docx",
+        "page": 1
+      }
+    ],
+    "q028": [
+      {
+        "doc": "information_security_policy_2024.docx",
+        "page": 1
+      }
+    ],
+    "q029": [
+      {
+        "doc": "information_security_policy_2022.docx",
+        "page": 1
+      }
+    ],
+    "q030": [
+      {
+        "doc": "information_security_policy_2024.docx",
+        "page": 2
+      }
+    ],
+    "q031": [
+      {
+        "doc": "information_security_policy_2024.docx",
+        "page": 2
+      }
+    ],
+    "q032": [
+      {
+        "doc": "information_security_policy_2024.docx",
+        "page": 1
+      }
+    ],
+    "q033": [
+      {
+        "doc": "information_security_policy_2024.docx",
+        "page": 1
+      }
+    ],
+    "q034": [
+      {
+        "doc": "information_security_policy_2024.docx",
+        "page": 1
+      }
+    ],
+    "q035": [
+      {
+        "doc": "information_security_policy_2024.docx",
+        "page": 2
+      }
+    ],
+    "q036": [
+      {
+        "doc": "information_security_policy_2024.docx",
+        "page": 2
+      }
+    ],
+    "q037": [
+      {
+        "doc": "information_security_policy_2022.docx",
+        "page": 2
+      }
+    ],
+    "q038": [
+      {
+        "doc": "information_security_policy_2024.docx",
+        "page": 2
+      }
+    ],
+    "q039": [
+      {
+        "doc": "information_security_policy_2024.docx",
+        "page": 2
+      }
+    ],
+    "q040": [
+      {
+        "doc": "information_security_policy_2024.docx",
+        "page": 2
+      }
+    ],
+    "q041": [
+      {
+        "doc": "employee_handbook.pdf",
+        "page": 2
+      }
+    ],
+    "q042": [
+      {
+        "doc": "employee_handbook.pdf",
+        "page": 2
+      }
+    ],
+    "q043": [
+      {
+        "doc": "employee_handbook.pdf",
+        "page": 2
+      }
+    ],
+    "q044": [
+      {
+        "doc": "employee_handbook.pdf",
+        "page": 2
+      }
+    ],
+    "q045": [
+      {
+        "doc": "employee_handbook.pdf",
+        "page": 2
+      }
+    ],
+    "q046": [
+      {
+        "doc": "employee_handbook.pdf",
+        "page": 2
+      }
+    ],
+    "q047": [
+      {
+        "doc": "employee_handbook.pdf",
+        "page": 2
+      }
+    ],
+    "q048": [
+      {
+        "doc": "employee_handbook.pdf",
+        "page": 1
+      }
+    ],
+    "q049": [
+      {
+        "doc": "employee_handbook.pdf",
+        "page": 1
+      }
+    ],
+    "q050": [
+      {
+        "doc": "employee_handbook.pdf",
+        "page": 3
+      }
+    ],
+    "q051": [
+      {
+        "doc": "employee_handbook.pdf",
+        "page": 3
+      }
+    ],
+    "q052": [
+      {
+        "doc": "employee_handbook.pdf",
+        "page": 3
+      }
+    ],
+    "q053": [
+      {
+        "doc": "employee_handbook.pdf",
+        "page": 3
+      }
+    ],
+    "q054": [
+      {
+        "doc": "employee_handbook.pdf",
+        "page": 3
+      },
+      {
+        "doc": "employee_handbook.pdf",
+        "page": 3
+      }
+    ],
+    "q055": [
+      {
+        "doc": "employee_handbook.pdf",
+        "page": 4
+      }
+    ],
+    "q056": [
+      {
+        "doc": "employee_handbook.pdf",
+        "page": 4
+      }
+    ],
+    "q057": [
+      {
+        "doc": "employee_handbook.pdf",
+        "page": 4
+      }
+    ],
+    "q058": [
+      {
+        "doc": "employee_handbook.pdf",
+        "page": 1
+      },
+      {
+        "doc": "employee_handbook.pdf",
+        "page": 1
+      }
+    ],
+    "q059": [
+      {
+        "doc": "employee_handbook.pdf",
+        "page": 2
+      }
+    ],
+    "q060": [
+      {
+        "doc": "remote_work_guidelines.md",
+        "page": 1
+      }
+    ],
+    "q061": [
+      {
+        "doc": "remote_work_guidelines.md",
+        "page": 1
+      }
+    ],
+    "q062": [
+      {
+        "doc": "remote_work_guidelines.md",
+        "page": 1
+      }
+    ],
+    "q063": [
+      {
+        "doc": "remote_work_guidelines.md",
+        "page": 1
+      }
+    ],
+    "q064": [
+      {
+        "doc": "remote_work_guidelines.md",
+        "page": 1
+      }
+    ],
+    "q065": [
+      {
+        "doc": "remote_work_guidelines.md",
+        "page": 1
+      }
+    ],
+    "q066": [
+      {
+        "doc": "remote_work_guidelines.md",
+        "page": 1
+      }
+    ],
+    "q067": [
+      {
+        "doc": "q3_2024_financial_report.pdf",
+        "page": 1
+      }
+    ],
+    "q068": [
+      {
+        "doc": "q3_2024_financial_report.pdf",
+        "page": 1
+      }
+    ],
+    "q069": [
+      {
+        "doc": "q3_2024_financial_report.pdf",
+        "page": 1
+      }
+    ],
+    "q070": [
+      {
+        "doc": "q3_2024_financial_report.pdf",
+        "page": 1
+      }
+    ],
+    "q071": [
+      {
+        "doc": "q3_2024_financial_report.pdf",
+        "page": 2
+      }
+    ],
+    "q072": [
+      {
+        "doc": "q3_2024_financial_report.pdf",
+        "page": 2
+      }
+    ],
+    "q073": [
+      {
+        "doc": "q3_2024_financial_report.pdf",
+        "page": 2
+      }
+    ],
+    "q074": [
+      {
+        "doc": "q3_2024_financial_report.pdf",
+        "page": 2
+      }
+    ],
+    "q075": [
+      {
+        "doc": "q3_2024_financial_report.pdf",
+        "page": 3
+      }
+    ],
+    "q076": [
+      {
+        "doc": "q3_2024_financial_report.pdf",
+        "page": 1
+      }
+    ],
+    "q077": [
+      {
+        "doc": "q3_2024_financial_report.pdf",
+        "page": 3
+      }
+    ],
+    "q078": [
+      {
+        "doc": "helixdb_v5_product_spec.md",
+        "page": 1
+      }
+    ],
+    "q079": [
+      {
+        "doc": "helixdb_v5_product_spec.md",
+        "page": 1
+      }
+    ],
+    "q080": [
+      {
+        "doc": "helixdb_v5_product_spec.md",
+        "page": 1
+      }
+    ],
+    "q081": [
+      {
+        "doc": "helixdb_v5_product_spec.md",
+        "page": 1
+      }
+    ],
+    "q082": [
+      {
+        "doc": "helixdb_v5_product_spec.md",
+        "page": 1
+      }
+    ],
+    "q083": [
+      {
+        "doc": "helixdb_v5_product_spec.md",
+        "page": 1
+      }
+    ],
+    "q084": [
+      {
+        "doc": "helixdb_v5_product_spec.md",
+        "page": 1
+      }
+    ],
+    "q085": [
+      {
+        "doc": "helixdb_v5_product_spec.md",
+        "page": 1
+      }
+    ],
+    "q086": [
+      {
+        "doc": "helixdb_v5_product_spec.md",
+        "page": 1
+      }
+    ],
+    "q087": [
+      {
+        "doc": "helixdb_v5_product_spec.md",
+        "page": 1
+      }
+    ],
+    "q088": [
+      {
+        "doc": "helixdb_v5_product_spec.md",
+        "page": 1
+      }
+    ],
+    "q089": [
+      {
+        "doc": "helixdb_v5_product_spec.md",
+        "page": 1
+      }
+    ],
+    "q090": [
+      {
+        "doc": "incident_response_runbook.txt",
+        "page": 1
+      }
+    ],
+    "q091": [
+      {
+        "doc": "incident_response_runbook.txt",
+        "page": 1
+      }
+    ],
+    "q092": [
+      {
+        "doc": "incident_response_runbook.txt",
+        "page": 1
+      }
+    ],
+    "q093": [
+      {
+        "doc": "incident_response_runbook.txt",
+        "page": 1
+      }
+    ],
+    "q094": [
+      {
+        "doc": "incident_response_runbook.txt",
+        "page": 1
+      }
+    ],
+    "q095": [
+      {
+        "doc": "incident_response_runbook.txt",
+        "page": 1
+      }
+    ],
+    "q096": [
+      {
+        "doc": "incident_response_runbook.txt",
+        "page": 1
+      }
+    ],
+    "q097": [
+      {
+        "doc": "incident_response_runbook.txt",
+        "page": 1
+      }
+    ],
+    "q098": [
+      {
+        "doc": "incident_response_runbook.txt",
+        "page": 1
+      }
+    ],
+    "q099": [
+      {
+        "doc": "data_retention_policy.docx",
+        "page": 1
+      }
+    ],
+    "q100": [
+      {
+        "doc": "data_retention_policy.docx",
+        "page": 1
+      }
+    ],
+    "q101": [
+      {
+        "doc": "data_retention_policy.docx",
+        "page": 1
+      }
+    ],
+    "q102": [
+      {
+        "doc": "data_retention_policy.docx",
+        "page": 2
+      },
+      {
+        "doc": "data_retention_policy.docx",
+        "page": 2
+      }
+    ],
+    "q103": [
+      {
+        "doc": "data_retention_policy.docx",
+        "page": 2
+      }
+    ],
+    "q104": [
+      {
+        "doc": "data_retention_policy.docx",
+        "page": 2
+      }
+    ],
+    "q105": [
+      {
+        "doc": "vendor_procurement_procedure.docx",
+        "page": 1
+      }
+    ],
+    "q106": [
+      {
+        "doc": "vendor_procurement_procedure.docx",
+        "page": 1
+      }
+    ],
+    "q107": [
+      {
+        "doc": "vendor_procurement_procedure.docx",
+        "page": 2
+      }
+    ],
+    "q108": [
+      {
+        "doc": "vendor_procurement_procedure.docx",
+        "page": 2
+      }
+    ],
+    "q109": [
+      {
+        "doc": "vendor_procurement_procedure.docx",
+        "page": 2
+      }
+    ],
+    "q110": [
+      {
+        "doc": "vendor_procurement_procedure.docx",
+        "page": 2
+      }
+    ],
+    "q111": [
+      {
+        "doc": "customer_support_sla.md",
+        "page": 1
+      }
+    ],
+    "q112": [
+      {
+        "doc": "customer_support_sla.md",
+        "page": 1
+      }
+    ],
+    "q113": [
+      {
+        "doc": "customer_support_sla.md",
+        "page": 1
+      }
+    ],
+    "q114": [
+      {
+        "doc": "customer_support_sla.md",
+        "page": 1
+      }
+    ],
+    "q115": [
+      {
+        "doc": "customer_support_sla.md",
+        "page": 1
+      }
+    ],
+    "q116": [
+      {
+        "doc": "customer_support_sla.md",
+        "page": 1
+      }
+    ],
+    "q117": [
+      {
+        "doc": "engineering_onboarding_guide.txt",
+        "page": 1
+      }
+    ],
+    "q118": [
+      {
+        "doc": "engineering_onboarding_guide.txt",
+        "page": 1
+      }
+    ],
+    "q119": [
+      {
+        "doc": "engineering_onboarding_guide.txt",
+        "page": 1
+      },
+      {
+        "doc": "engineering_onboarding_guide.txt",
+        "page": 1
+      }
+    ],
+    "q120": [
+      {
+        "doc": "engineering_onboarding_guide.txt",
+        "page": 1
+      }
+    ],
+    "q121": [
+      {
+        "doc": "engineering_onboarding_guide.txt",
+        "page": 1
+      }
+    ],
+    "q122": [
+      {
+        "doc": "travel_expense_policy_2024.pdf",
+        "page": 2
+      }
+    ],
+    "q123": [
+      {
+        "doc": "q3_2024_financial_report.pdf",
+        "page": 2
+      }
+    ],
+    "q124": [
+      {
+        "doc": "employee_handbook.pdf",
+        "page": 2
+      }
+    ],
+    "q125": [
+      {
+        "doc": "incident_response_runbook.txt",
+        "page": 1
+      }
+    ]
+  }
+}

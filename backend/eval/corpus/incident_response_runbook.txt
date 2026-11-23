@@ -1,0 +1,39 @@
+INCIDENT RESPONSE RUNBOOK
+
+This runbook describes how Helix engineering and security teams respond to production incidents affecting HelixDB Cloud. It is used by the on-call engineers of the Site Reliability Engineering (SRE) team.
+
+1. Severity Levels
+
+Incidents are classified into four severity levels. SEV1 is a complete outage of a production region or confirmed data loss. SEV2 is a major degradation affecting many customers, such as elevated error rates above 5%. SEV3 is a partial degradation affecting a small number of customers. SEV4 is a minor issue with no customer impact.
+
+2. Response Times
+
+For SEV1 incidents, the on-call engineer must acknowledge the page within 5 minutes and an incident commander must be assigned within 15 minutes. For SEV2 incidents, the page must be acknowledged within 15 minutes. SEV3 and SEV4 incidents are handled during business hours.
+
+3. Roles
+
+The incident commander coordinates the response and makes decisions. The communications lead updates the status page and informs customer support. The operations lead investigates and applies fixes. For SEV1 incidents, the VP of Engineering must be informed within 30 minutes.
+
+4. Communication
+
+The public status page must be updated within 20 minutes of a SEV1 or SEV2 incident being declared, and then at least every 30 minutes until resolution. Internal coordination happens in a dedicated Slack channel named inc-YYYYMMDD-short-name.
+
+5. Common Error Codes
+
+Error HX-503 means that the query router cannot reach a storage node. The first step is to check the node health dashboard and restart unhealthy storage pods.
+
+Error HX-429 means that a tenant exceeded its request quota. This is expected behaviour and is not an incident unless the quota configuration is wrong.
+
+Error HX-1201 means that Raft leader election failed for a data range. Escalate HX-1201 errors immediately to the storage team because they can lead to unavailability of the affected range.
+
+6. Rollbacks
+
+If an incident started within 2 hours of a deployment, the default action is to roll back the deployment first and investigate afterwards. Rollbacks are performed with the deploy tool using the command helixctl rollback --to previous.
+
+7. Postmortems
+
+A blameless postmortem is required for every SEV1 and SEV2 incident. The postmortem document must be published within 5 business days and must list action items with owners and due dates. Postmortems are reviewed in the weekly reliability review meeting on Thursdays.
+
+8. Security Incidents
+
+If an incident may involve unauthorized access to customer data, the security team must be paged immediately and the legal team must be informed within 24 hours, because some regulations require notification of authorities within 72 hours.

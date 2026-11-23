@@ -1,0 +1,27 @@
+# Runtime dependencies (versions are the ones tested in this repo).
+# CPU-only torch is installed separately in the Dockerfile from the PyTorch CPU index.
+fastapi==0.165.0
+uvicorn[standard]==0.54.0
+pydantic==2.13.5
+pydantic-settings==2.16.3
+email-validator==2.4.0
+SQLAlchemy==2.1.9
+asyncpg==0.32.0
+greenlet==3.5.6
+alembic==1.20.1
+redis==5.3.1
+arq==0.28.0
+qdrant-client==1.20.0
+numpy==2.5.3
+sentence-transformers==6.3.0
+transformers==5.24.0
+openai==3.57.0
+httpx==0.28.1
+pymupdf==2.1
+python-docx==1.2.0
+python-multipart==0.0.32
+aiofiles==25.1.0
+bcrypt==5.0.0
+PyJWT==2.15.0
+structlog==26.1.0
+sse-starlette==3.4.11
