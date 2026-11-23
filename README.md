@@ -36,7 +36,42 @@ streaming chat — with a built-in evaluation suite that measures what each retr
 
 ## Measured results
 
-<!-- RESULTS -->
+Measured by `python -m eval.run` on the bundled benchmark of 135 questions over 13 documents. All 135 are
+used for retrieval and answer scoring, and the 10 unanswerable ones are used for refusals. Answers were
+generated with Google Gemini (`gemini-3.1-flash-lite`, free tier), and every number comes from
+[`backend/eval/results/benchmark_gemini.json`](backend/eval/results/benchmark_gemini.json). The full report,
+with confidence intervals, a breakdown by question type and charts, is in
+[docs/benchmarks/benchmark_gemini.md](docs/benchmarks/benchmark_gemini.md).
+
+| Configuration | Recall@1 | Recall@5 | MRR | Top-1 correct doc (filtered Qs) | Answer correctness | Faithfulness | Citation precision | Correct refusals | False refusals |
+|---|---|---|---|---|---|---|---|---|---|
+| 1. Basic vector search | 0.676 | 0.968 | 0.801 | 59.4% | 93.6% | 91.4% | 96.7% | 100.0% | 2.4% |
+| 2. Improved chunking + vector | 0.824 | 0.976 | 0.894 | 81.2% | 93.6% | 94.3% | 98.0% | 100.0% | 2.4% |
+| 3. Hybrid (BM25 + vector, RRF) | 0.832 | 0.984 | 0.903 | 81.2% | 94.4% | 93.9% | 98.0% | 100.0% | 1.6% |
+| 4. Hybrid + reranking | 0.904 | 1.000 | 0.951 | 87.5% | 95.2% | 93.2% | 97.6% | 100.0% | 0.0% |
+| 5. Hybrid + reranking + filters | 0.936 | 1.000 | 0.967 | 100.0% | 96.0% | 92.4% | 96.8% | 100.0% | 0.0% |
+
+What the numbers show:
+
+* **Each retrieval stage improves ranking.** The first retrieved chunk is right 67.6% → 93.6% of the time
+  (Recall@1), and MRR rises from 0.801 to 0.967. Structure-aware chunking gives the biggest single jump,
+  and the cross-encoder reranker gives the second biggest.
+* **Metadata filters fix version mix-ups.** On the 32 questions where the user scopes the search (mostly
+  2023 vs 2024 policy versions), basic vector search starts with the right document 59.4% of the time; with
+  filters it's 100%.
+* **Answer correctness rises from 93.6% to 96.0%.** Every configuration refuses all unanswerable
+  questions. Reranking removes the false refusals (2.4% → 0%), because the right passage reaches the
+  model's context.
+* **Cost.** Structured chunks halve the prompt size (1,471 → 765 tokens per question), which halves the
+  projected API cost (about $0.0002 → $0.0001 per query at gpt-4o-mini list prices). This run itself cost
+  $0, on Gemini's free tier.
+* **Latency.** Reranking adds about 310 ms to retrieval on a 4-core CPU (p50 34 ms → 347 ms). In the live
+  app, Gemini generation took 0.8–1.3 s per answer. The benchmark's own end-to-end latency isn't
+  meaningful, because the run was throttled to the free tier's request limit; the report explains why.
+
+These results come from a small synthetic corpus written for this benchmark, so absolute scores will be
+lower on real data. Faithfulness is a conservative NLI-based measure that under-counts facts read from
+tables. See [docs/EVALUATION.md](docs/EVALUATION.md) for definitions and limitations.
 
 ## Architecture
 

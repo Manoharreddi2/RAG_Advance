@@ -65,6 +65,8 @@ def md_blocks(body: str):
 
 
 def render_pdf(meta, blocks, dest: Path):
+    from reportlab import rl_config
+    rl_config.invariant = 1  # reproducible output: fixed creation date and document id
     from reportlab.lib import colors
     from reportlab.lib.pagesizes import A4
     from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
@@ -101,7 +103,13 @@ def render_pdf(meta, blocks, dest: Path):
 def render_docx(meta, blocks, dest: Path):
     import docx
     d = docx.Document()
+    from datetime import datetime
     d.core_properties.title, d.core_properties.author = meta["title"], meta["author"]
+    # reproducible output: timestamps from the document date instead of "now"
+    stamp = datetime.fromisoformat(meta["date"])
+    d.core_properties.created = d.core_properties.modified = stamp
+    d.core_properties.last_printed = stamp
+    d.core_properties.revision = 1
     for kind, val in blocks:
         if kind == "pagebreak":
             d.add_page_break()
@@ -119,6 +127,14 @@ def render_docx(meta, blocks, dest: Path):
                 for j, c in enumerate(r):
                     t.cell(i, j).text = c
     d.save(dest)
+    # zip entries carry the current time: rewrite them with a fixed timestamp for byte-identical rebuilds
+    import zipfile
+    with zipfile.ZipFile(dest) as z:
+        entries = [(i.filename, z.read(i.filename)) for i in z.infolist()]
+    with zipfile.ZipFile(dest, "w", zipfile.ZIP_DEFLATED) as z:
+        for name, data in entries:
+            z.writestr(zipfile.ZipInfo(name, date_time=(stamp.year, stamp.month, stamp.day, 0, 0, 0)), data,
+                       compress_type=zipfile.ZIP_DEFLATED)
 
 
 def _words(s: str) -> list[str]:

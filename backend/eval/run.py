@@ -111,12 +111,15 @@ class PacedLLM:
         self.llm, self.name, self.retries = llm, llm.name, retries
         self.min_interval = 60.0 / rpm if rpm else 0.0
         self._last = 0.0
+        self.last_wait_s = 0.0  # time spent pacing/backing off in the last call (excluded from latency)
 
     async def complete(self, messages, max_tokens=None, temperature=None):
+        self.last_wait_s = 0.0
         for attempt in range(self.retries + 1):
             wait = self._last + self.min_interval - time.monotonic()
             if wait > 0:
                 await asyncio.sleep(wait)
+                self.last_wait_s += wait
             self._last = time.monotonic()
             try:
                 return await self.llm.complete(messages, max_tokens, temperature)
@@ -129,6 +132,7 @@ class PacedLLM:
                 if not transient or attempt == self.retries:
                     raise
                 delay = min(15 * (attempt + 1), 90)
+                self.last_wait_s += delay
                 print(f"  LLM transient error ({msg[:300]}), retry {attempt + 1} in {delay}s", flush=True)
                 await asyncio.sleep(delay)
 
@@ -189,6 +193,7 @@ async def run(args) -> Path:
                 standalone[q["id"]] = f"{prev} {q['question']}"
 
     per_question = []
+    paced_latency_rows: set[str] = set()
     for cfg in configs:
         pipe = pipelines[cfg["strategy"]]
         rcfg = RetrievalConfig(top_k=RETRIEVE_K, candidates=30, rerank_depth=30, **cfg["retrieval"])
@@ -220,12 +225,16 @@ async def run(args) -> Path:
                         text, usage = await llm.complete(build_messages(query if q.get("history") else q["question"],
                                                                         ctx, q.get("history")),
                                                          max_tokens=args.max_tokens)
-                    rec = {"key": key, "text": text, "usage": usage, "generation_ms": (time.perf_counter() - t) * 1000}
+                    waited = 0.0 if gated else getattr(llm, "last_wait_s", 0.0)
+                    rec = {"key": key, "text": text, "usage": usage, "pacing_excluded": True,
+                           "generation_ms": (time.perf_counter() - t - waited) * 1000}
                     cache.put(rec)
                     row["generation_cached"] = False
                 else:
                     row["generation_cached"] = True
                 post = postprocess(rec["text"], ctx)
+                if not rec.get("pacing_excluded") and not gated and args.llm_rpm:
+                    paced_latency_rows.add(row["id"])
                 row.update({"answer": rec["text"], "abstained": post["abstained"], "gated": gated,
                             "generation_ms": rec["generation_ms"], "prompt_tokens": rec["usage"].get("prompt_tokens", 0),
                             "completion_tokens": rec["usage"].get("completion_tokens", 0)})
@@ -254,7 +263,8 @@ async def run(args) -> Path:
            "n_answerable": sum(1 for q in questions if q["evidence"]),
            "n_with_filters": sum(1 for q in questions if q.get("filters")),
            "python": platform.python_version(), "machine": platform.machine(), "cpu_count": os.cpu_count(),
-           "device": s.device, "generation": llm is not None}
+           "device": s.device, "generation": llm is not None, "llm_rpm": args.llm_rpm,
+           "generation_latency_includes_pacing": bool(paced_latency_rows)}
     run_name = args.run_name or f"run_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}"
     out = {"run_name": run_name, "created_at": datetime.now(timezone.utc).isoformat(), "environment": env,
            "configurations": configs, "summary": summary, "per_question": per_question}

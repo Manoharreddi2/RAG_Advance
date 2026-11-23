@@ -16,7 +16,9 @@ def test_qdrant_host_and_cors_parsing():
 
 def test_production_requires_strong_secret():
     with pytest.raises(RuntimeError):
-        Settings(environment="production").validate_for_production()
+        Settings(environment="production", jwt_secret="change-me-in-production").validate_for_production()
+    with pytest.raises(RuntimeError):
+        Settings(environment="production", jwt_secret="short").validate_for_production()
     Settings(environment="production", jwt_secret="x" * 40).validate_for_production()
 
 

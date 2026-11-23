@@ -30,9 +30,10 @@ export default function Evaluation() {
 
   const loadRuns = () => api.evalRuns().then((r) => { setRuns(r); if (r.length && !runId) setRunId(r[0].id); });
   useEffect(() => { loadRuns(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => { if (runId) api.evalRun(runId).then((r) => { setRun(r); setQConfig(Object.keys(r.metrics).slice(-1)[0]); }); }, [runId]);
+  useEffect(() => { if (runId) api.evalRun(runId).then((r) => { setRun(r); setQConfig(Object.entries<any>(r.metrics).sort((a, b) => a[1].label.localeCompare(b[1].label, undefined, { numeric: true })).slice(-1)[0][0]); }); }, [runId]);
 
-  const configs = run ? Object.entries<any>(run.metrics) : [];
+  // JSONB does not preserve key order: sort by the numbered label ("1. ...", "2. ...")
+  const configs = run ? Object.entries<any>(run.metrics).sort((a, b) => a[1].label.localeCompare(b[1].label, undefined, { numeric: true })) : [];
   const env = run?.environment ?? {};
   const series = (key: string): BarDatum[] => configs.map(([k, v]) => ({ key: k, short: v.label.split(". ")[0], label: v.label, value: v[subset][key] ?? null }));
   const hasGen = !!env.generation;
@@ -75,6 +76,7 @@ export default function Evaluation() {
         <h2>Retrieval quality</h2>
         <div className="chart-grid">{RETRIEVAL.map(([k, t, hb, f]) => <MetricBars key={k} title={t} data={series(k)} higherBetter={hb} format={f} />)}</div>
         {hasGen && <><h2>Answer quality, latency and cost</h2>
+          {env.generation_latency_includes_pacing && <div className="alert info">Latency caveat: this run used a free-tier API throttled to {env.llm_rpm} requests/min, and the recorded generation time includes that wait, so end-to-end latency here is not representative. Retrieval latency is unaffected.</div>}
           <div className="chart-grid">{ANSWER.map(([k, t, hb, f]) => <MetricBars key={k} title={t} data={series(k)} higherBetter={hb} format={f}
             sub={k === "projected_cost_per_query_usd" ? "Measured tokens × configured API price" : undefined} />)}</div></>}
 

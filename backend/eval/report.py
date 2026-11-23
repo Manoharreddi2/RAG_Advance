@@ -112,6 +112,12 @@ def write_report(result: dict, out_dir: Path) -> Path:
           "|---|" + "---|" * len(types)]
     for n, v in s.items():
         L.append(f"| {v['label']} | " + " | ".join(_fmt(v["by_type"][t]["mrr"]) for t in types) + " |")
+    if gen and env.get("generation_latency_includes_pacing"):
+        L += ["", f"> **Latency caveat for this run.** Answers were generated through a free-tier API throttled "
+              f"client-side to {env.get('llm_rpm')} requests/minute, and the recorded generation time includes that "
+              "wait (about 60 / rpm seconds per call). End-to-end latency below is therefore dominated by the throttle "
+              "and is **not** representative of the system; retrieval latency is unaffected. Runs made with the "
+              "current runner subtract pacing time automatically."]
     if gen:
         L += ["", "## Answer quality, latency and cost", "", f"![answers]({name}_answers.png)", "",
               "| Configuration | Correctness (95% CI) | Key-fact recall | Faithfulness | Citation precision | Citation page acc. | Correct refusals | False refusals | p50 latency ms | p95 latency ms | Tokens in/out | Cost/query (actual) | Cost/query (projected) |",
