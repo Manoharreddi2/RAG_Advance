@@ -122,11 +122,14 @@ class PacedLLM:
                 return await self.llm.complete(messages, max_tokens, temperature)
             except Exception as e:  # LLMError wraps the provider error text
                 msg = str(e)
+                if "per day" in msg or "PerDay" in msg:
+                    raise SystemExit(f"Daily LLM quota exhausted - completed generations are checkpointed; "
+                                     f"re-run the same command after the quota resets.\n{msg[:600]}")
                 transient = any(k in msg for k in ("429", "RateLimit", "rate limit", "503", "500", "Timeout", "overloaded"))
                 if not transient or attempt == self.retries:
                     raise
                 delay = min(15 * (attempt + 1), 90)
-                print(f"  LLM transient error ({msg[:80]}...), retry {attempt + 1} in {delay}s", flush=True)
+                print(f"  LLM transient error ({msg[:300]}), retry {attempt + 1} in {delay}s", flush=True)
                 await asyncio.sleep(delay)
 
 
