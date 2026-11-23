@@ -60,7 +60,7 @@ The repository contains a Blueprint, [`render.yaml`](../render.yaml), that provi
   (ingestion runs as background tasks inside the API instance that received the upload). To run a separate
   Background Worker (`arq app.ingestion.worker.WorkerSettings`) on Render, store uploads in shared object
   storage (S3/R2) instead of the local disk — the worker and API then only share Postgres, Redis and Qdrant.
-* **LLM.** With `OPENAI_API_KEY` set the provider resolves to OpenAI automatically. For a free option use Google Gemini: `LLM_PROVIDER=openai_compatible`, `OPENAI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/`, `OPENAI_MODEL=gemini-2.5-flash`, `LLM_REASONING_EFFORT=none`, your Gemini key in `OPENAI_API_KEY`, and `PRICE_INPUT_PER_M=0` / `PRICE_OUTPUT_PER_M=0`. Running the local
+* **LLM.** With `OPENAI_API_KEY` set the provider resolves to OpenAI automatically. For a free option use Google Gemini: `LLM_PROVIDER=openai_compatible`, `OPENAI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/`, `OPENAI_MODEL=gemini-3.1-flash-lite`, your Gemini key in `OPENAI_API_KEY`, and `PRICE_INPUT_PER_M=0` / `PRICE_OUTPUT_PER_M=0`. Running the local
   Hugging Face LLM on Render needs a high-memory plan; an external OpenAI-compatible endpoint (vLLM, Ollama
   on a GPU box, or a hosted provider) is usually the better choice: set `LLM_PROVIDER=openai_compatible`,
   `OPENAI_BASE_URL` and `OPENAI_MODEL`.
