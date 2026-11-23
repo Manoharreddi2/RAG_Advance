@@ -55,9 +55,14 @@ class Settings(BaseSettings):
     local_llm_model: str = "Qwen/Qwen2.5-1.5B-Instruct"
     llm_temperature: float = 0.0
     llm_max_tokens: int = 512
-    # USD per 1M tokens; used for cost accounting. Override for your model/contract.
+    # Passed as `reasoning_effort` when set (e.g. "none" for Gemini 2.5 Flash, "low" for o-series models).
+    llm_reasoning_effort: str | None = None
+    # USD per 1M tokens actually charged for the configured model (0 for free tiers / local models).
     price_input_per_m: float = 0.15
     price_output_per_m: float = 0.60
+    # Reference price used for the *projected* cost in evaluation reports (default: gpt-4o-mini list price).
+    projected_price_input_per_m: float = 0.15
+    projected_price_output_per_m: float = 0.60
 
     # --- retrieval defaults ---
     retrieval_top_k: int = 5

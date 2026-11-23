@@ -125,11 +125,13 @@ def write_report(result: dict, out_dir: Path) -> Path:
                      f"{_fmt(o['latency_ms_p50'], digits=0)} | {_fmt(o['latency_ms_p95'], digits=0)} | "
                      f"{_fmt(o['prompt_tokens_mean'], digits=0)} / {_fmt(o['completion_tokens_mean'], digits=0)} | "
                      f"${o['cost_per_query_usd']:.6f} | ${o['projected_cost_per_query_usd']:.6f} |")
-        p = env["price_per_m_tokens"]
-        L += ["", f"*Actual* cost is what this run paid (a local model costs $0 in API fees). *Projected* cost applies "
-              f"the configured API price (${p['input']}/1M input, ${p['output']}/1M output tokens; defaults match "
-              "gpt-4o-mini list pricing, override with `PRICE_INPUT_PER_M`/`PRICE_OUTPUT_PER_M`) to the token counts "
-              "measured here with the local model's tokenizer, so it is an estimate.", ""]
+        p = env.get("projected_price_per_m_tokens", env["price_per_m_tokens"])
+        a = env["price_per_m_tokens"]
+        L += ["", f"*Actual* cost uses the configured price of the model that ran (${a['input']}/1M input, "
+              f"${a['output']}/1M output; $0 for local models and free tiers). *Projected* cost applies a reference "
+              f"API price (${p['input']}/1M input, ${p['output']}/1M output — gpt-4o-mini list pricing by default, "
+              "set `PROJECTED_PRICE_INPUT_PER_M`/`PROJECTED_PRICE_OUTPUT_PER_M`) to the token counts measured in this "
+              "run, so it is an estimate.", ""]
     L += ["## Metric definitions", "",
           "* **Relevant chunk**: from the gold document and contains ≥70% of a gold evidence span's content tokens "
           "(chunking-agnostic, so fixed and structured chunks are judged against the same evidence).",

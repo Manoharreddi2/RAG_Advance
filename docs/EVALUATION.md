@@ -61,6 +61,7 @@ cd backend
 python -m eval.run --no-generation          # retrieval metrics only (~2 min on CPU)
 python -m eval.run                          # full run with the configured LLM
 OPENAI_API_KEY=sk-... python -m eval.run --run-name openai_gpt4o_mini   # same benchmark with OpenAI
+python -m eval.run --llm-rpm 15                                         # pace calls for free-tier quotas
 ```
 
 Results go to `backend/eval/results/<run>.json` and a Markdown report with charts to `docs/benchmarks/`.
@@ -76,6 +77,7 @@ re-scoring after a metric change needs no new LLM calls.
   understanding.
 * Key-fact matching can mark a correct paraphrase as wrong (e.g. "twice yearly" vs "twice a year");
   the per-question browser on the Evaluation page shows every answer, so such cases can be checked.
-* The included full run uses a 1.5B-parameter local model on CPU, because no API key was available
-  when it was produced. Answer-level scores reflect that model; re-run with `OPENAI_API_KEY` set to measure
-  GPT-class generation on the same benchmark.
+* The included full run generates answers with Google Gemini 2.5 Flash (free tier, thinking disabled),
+  paced to 15 requests per minute. Generation latency therefore includes network round-trips to Google
+  and is not comparable to a self-hosted model. Re-run with another provider's settings to compare models
+  on the same benchmark.

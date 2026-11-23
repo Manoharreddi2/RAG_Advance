@@ -54,9 +54,10 @@ class OpenAILLM(BaseLLM):
         s = get_settings()
         kwargs = dict(model=self.name, messages=messages, stream=True,
                       max_tokens=max_tokens or s.llm_max_tokens,
-                      temperature=s.llm_temperature if temperature is None else temperature)
-        if not self.compatible:
-            kwargs["stream_options"] = {"include_usage": True}
+                      temperature=s.llm_temperature if temperature is None else temperature,
+                      stream_options={"include_usage": True})  # OpenAI, Gemini, vLLM and Ollama support this
+        if s.llm_reasoning_effort:
+            kwargs["reasoning_effort"] = s.llm_reasoning_effort
         try:
             resp = await self.client.chat.completions.create(**kwargs)
             usage, n_chars = None, 0
@@ -69,7 +70,9 @@ class OpenAILLM(BaseLLM):
         except Exception as e:
             raise LLMError(f"{type(e).__name__}: {e}") from e
         if usage:
-            yield "usage", {"prompt_tokens": usage.prompt_tokens, "completion_tokens": usage.completion_tokens,
+            # hidden reasoning tokens are billed as output: count them (total - prompt) when reported separately
+            completion = max(usage.completion_tokens or 0, (usage.total_tokens or 0) - (usage.prompt_tokens or 0))
+            yield "usage", {"prompt_tokens": usage.prompt_tokens, "completion_tokens": completion,
                             "model": self.name, "estimated": False}
         else:  # some compatible servers do not report usage when streaming
             prompt_chars = sum(len(m["content"]) for m in messages)

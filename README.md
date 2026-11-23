@@ -21,7 +21,7 @@ streaming chat — with a built-in evaluation suite that measures what each retr
   and supporting quote, verification of quoted passages, a fixed refusal when evidence is missing and a
   reranker-score **relevance gate** that refuses before the LLM can improvise. Conversational follow-ups
   are rewritten into standalone queries.
-* **LLM-agnostic** — OpenAI, any OpenAI-compatible server (Ollama, vLLM, LM Studio, TGI) or a Hugging Face
+* **LLM-agnostic** — OpenAI, Google Gemini, any OpenAI-compatible server (Ollama, vLLM, LM Studio, TGI) or a Hugging Face
   model in-process. Chosen automatically from the environment.
 * **Performance & operations** — Server-Sent Events streaming, Redis answer cache (invalidated on
   ingestion), Redis sliding-window rate limiting, async I/O throughout, JSON structured logs with request
@@ -103,6 +103,7 @@ process uploads inside the API process instead of running the worker.
 | Setup | Environment |
 |---|---|
 | OpenAI | `OPENAI_API_KEY=sk-…` (`OPENAI_MODEL`, default `gpt-4o-mini`) |
+| Google Gemini (free tier) | `LLM_PROVIDER=openai_compatible OPENAI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/ OPENAI_API_KEY=<key> OPENAI_MODEL=gemini-2.5-flash LLM_REASONING_EFFORT=none PRICE_INPUT_PER_M=0 PRICE_OUTPUT_PER_M=0` |
 | Ollama / vLLM / LM Studio | `LLM_PROVIDER=openai_compatible OPENAI_BASE_URL=http://host:11434/v1 OPENAI_MODEL=llama3.1:8b` |
 | Local Hugging Face model | `LLM_PROVIDER=local LOCAL_LLM_MODEL=Qwen/Qwen2.5-1.5B-Instruct` (`DEVICE=cuda` on GPU) |
 

@@ -103,6 +103,33 @@ async def build_indexes(qdrant_url: str, strategies: set[str]) -> tuple[dict, di
     return pipelines, stats
 
 
+class PacedLLM:
+    """Wraps an LLM for long benchmark runs: optional requests-per-minute pacing and retry with backoff on
+    rate-limit / transient errors, so free-tier quotas slow the run down instead of corrupting results."""
+
+    def __init__(self, llm, rpm: float | None = None, retries: int = 8):
+        self.llm, self.name, self.retries = llm, llm.name, retries
+        self.min_interval = 60.0 / rpm if rpm else 0.0
+        self._last = 0.0
+
+    async def complete(self, messages, max_tokens=None, temperature=None):
+        for attempt in range(self.retries + 1):
+            wait = self._last + self.min_interval - time.monotonic()
+            if wait > 0:
+                await asyncio.sleep(wait)
+            self._last = time.monotonic()
+            try:
+                return await self.llm.complete(messages, max_tokens, temperature)
+            except Exception as e:  # LLMError wraps the provider error text
+                msg = str(e)
+                transient = any(k in msg for k in ("429", "RateLimit", "rate limit", "503", "500", "Timeout", "overloaded"))
+                if not transient or attempt == self.retries:
+                    raise
+                delay = min(15 * (attempt + 1), 90)
+                print(f"  LLM transient error ({msg[:80]}...), retry {attempt + 1} in {delay}s", flush=True)
+                await asyncio.sleep(delay)
+
+
 class GenCache:
     """Append-only checkpoint so long generation runs can resume."""
 
@@ -136,7 +163,7 @@ async def run(args) -> Path:
     llm = None
     if not args.no_generation:
         from app.generation.llm import get_llm
-        llm = get_llm()
+        llm = PacedLLM(get_llm(), rpm=args.llm_rpm)
         nli = get_nli()
     RESULTS.mkdir(exist_ok=True)
     model_name = getattr(llm, "name", None)
@@ -201,8 +228,8 @@ async def run(args) -> Path:
                             "completion_tokens": rec["usage"].get("completion_tokens", 0)})
                 row["total_ms"] = row["retrieval_ms"] + row["generation_ms"]
                 row["cost_usd"] = cost_usd(rec["usage"])
-                row["projected_cost_usd"] = (row["prompt_tokens"] * s.price_input_per_m
-                                             + row["completion_tokens"] * s.price_output_per_m) / 1e6
+                row["projected_cost_usd"] = (row["prompt_tokens"] * s.projected_price_input_per_m
+                                             + row["completion_tokens"] * s.projected_price_output_per_m) / 1e6
                 row.update(answer_correctness(rec["text"], q["key_facts"], bool(q["evidence"]), post["abstained"]))
                 if q["evidence"] and not post["abstained"]:
                     row.update(faithfulness(rec["text"], [c["text"] for c in ctx], nli))
@@ -215,6 +242,9 @@ async def run(args) -> Path:
     env = {"embedding_model": s.embedding_model, "reranker_model": s.reranker_model, "nli_model": s.nli_model,
            "llm": model_name, "llm_provider": s.resolved_llm_provider if llm else None,
            "price_per_m_tokens": {"input": s.price_input_per_m, "output": s.price_output_per_m},
+           "projected_price_per_m_tokens": {"input": s.projected_price_input_per_m,
+                                            "output": s.projected_price_output_per_m},
+           "llm_reasoning_effort": s.llm_reasoning_effort,
            "context_k": CONTEXT_K, "retrieve_k": RETRIEVE_K, "abstain_threshold": s.abstain_threshold,
            "index": index_stats, "n_questions": len(questions),
            "n_answerable": sum(1 for q in questions if q["evidence"]),
@@ -295,7 +325,8 @@ def main():
     ap.add_argument("--limit", type=int)
     ap.add_argument("--configs", nargs="*")
     ap.add_argument("--qdrant", default=os.environ.get("EVAL_QDRANT_URL", get_settings().qdrant_url))
-    ap.add_argument("--max-tokens", type=int, default=200)
+    ap.add_argument("--max-tokens", type=int, default=300)
+    ap.add_argument("--llm-rpm", type=float, help="max LLM requests per minute (free-tier quotas)")
     ap.add_argument("--run-name")
     asyncio.run(run(ap.parse_args()))
 
