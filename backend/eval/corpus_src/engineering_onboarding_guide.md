@@ -1,0 +1,38 @@
+---
+output: engineering_onboarding_guide.txt
+title: Engineering Onboarding Guide
+category: Engineering
+author: Sarah Lindqvist
+date: 2024-08-05
+---
+ENGINEERING ONBOARDING GUIDE
+
+Welcome to Helix engineering. This guide helps new engineers become productive during their first weeks. Every new engineer is assigned an onboarding buddy from their team who answers questions during the first 60 days.
+
+First Week
+
+On the first day, engineers receive their laptop and accounts. During the first week, engineers set up the development environment, complete the security awareness training and ship a small change to production. Shipping a first change in the first week is a long-standing Helix tradition.
+
+Development Environment
+
+The HelixDB source code is stored in a monorepo on the internal GitLab server. Engineers build the code with Bazel. A full build takes about 25 minutes on a standard laptop; incremental builds usually take less than 2 minutes. Remote build caching is enabled by default.
+
+Code Review
+
+Every change requires at least one approval from a code owner before it can be merged. Changes to the storage engine or the consensus layer require two approvals. Reviewers are expected to respond to review requests within one business day.
+
+Testing
+
+All changes must pass the unit test suite and the integration test suite in continuous integration before merging. The nightly Jepsen-style consistency tests run against the main branch, and failures block the next release.
+
+Deployment
+
+HelixDB Cloud is deployed with a progressive rollout: first to the internal staging region, then to 5% of production clusters, and finally to all clusters over 3 days. Deployments are frozen during the last two weeks of December.
+
+On-Call
+
+Engineers join the on-call rotation after 3 months. On-call shifts last one week. Engineers receive an on-call stipend of 400 USD per week of primary on-call duty.
+
+Learning
+
+New engineers should read the HelixDB architecture overview and the Incident Response Runbook during their first month. Internal tech talks take place every second Wednesday.
