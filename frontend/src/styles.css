@@ -111,6 +111,7 @@ th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--bor
 th { font-size: 12px; font-weight: 600; color: var(--text-2); background: var(--surface-2); white-space: nowrap; }
 tbody tr:hover { background: var(--surface-2); }
 td.r, th.r { text-align: right; font-variant-numeric: tabular-nums; }
+td.num, td.faint, td.nowrap { white-space: nowrap; }
 tr.best td { font-weight: 600; }
 
 /* ---------- stat tiles ---------- */
